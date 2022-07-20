@@ -114,6 +114,8 @@ namespace ExamTaskCSharp.Modes
             Vacancies = new List<Vacancy> { vacancy3 },
         };
 
+
+
         static DataBase dataBase = new DataBase
         {
             humans = new List<Human> { employer1, employer2, worker1 }
