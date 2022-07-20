@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ExamTaskCSharp.Modes
@@ -146,7 +147,20 @@ namespace ExamTaskCSharp.Modes
 
         public static void SignUp()
         {
+            Console.Clear();
+            Console.Write(@"You are Empoyer or Worker?
 
+Employer   [1]
+Worker     [2]
+HomePage   [0]
+
+Add Here : ");
+            int opt = int.Parse(Console.ReadLine());
+            if (opt==0)
+            {
+                Console.Clear();
+                Start();
+            }
             Console.Write("Name : ");
             string name = Console.ReadLine();
 
@@ -160,7 +174,7 @@ namespace ExamTaskCSharp.Modes
             string city = Console.ReadLine();
 
             Console.Write("Phone : ");
-            CurrentUser.Phone = Console.ReadLine();
+            string phone = Console.ReadLine();
 
             Console.Write("E-Mail : ");
             string mail = Console.ReadLine();
@@ -172,28 +186,70 @@ namespace ExamTaskCSharp.Modes
             {
                 if (mail == item.Mail)
                 {
+                    Thread.Sleep(1000);
                     Console.WriteLine("This E-Mail has already used!");
                     SignUp();
                 }
             }
 
-            Console.Write(@"You are Empoyer or Worker?
-
-Employer   [1]
-Worker     [2]
-
-Add Here : ");
-            int opt = int.Parse(Console.ReadLine());
 
 
+            if (opt == 1)
+            {
+                Console.Clear();
+                Employer newEmployer = new Employer
+                {
+                    Name = name,
+                    Surname = surname,
+                    Age = age,
+                    City = city,
+                    Mail = mail,
+                    Password = password,
+                    Phone = phone,
+                };
+
+                Console.Write("Please add count of Vacancy to add : ");
+                int vacCount = int.Parse(Console.ReadLine());
+                for (int i = 0; i < vacCount; i++)
+                {
+                    newEmployer.AddNewVacancies();
+                }
+                Console.Clear();
+                Start();
+            }
+            else if (opt == 2)
+            {
+                Console.Clear();
+                Worker newWorker = new Worker
+                {
+                    Name = name,
+                    Surname = surname,
+                    Age = age,
+                    City = city,
+                    Mail = mail,
+                    Password = password,
+                    Phone = phone,
+
+                };
+                Console.Write("Please enter how many CV you want to create : ");
+                int count = int.Parse(Console.ReadLine());
+                for (int i = 0; i < count; i++)
+                {
+                    newWorker.AddCV();
+                }
+                Console.Clear();
+                Start();
+            }
 
         }
 
 
         public static void Start()
         {
+            
             while (true)
             {
+                FrileWriterFileReadercs.WriteFile(dataBase); 
 
                 Console.Write(@"Sign In   [1]
 Sign up   [2]
@@ -206,7 +262,7 @@ Add Here : ");
                 }
                 else if (select == 2)
                 {
-
+                    SignUp();
                 }
             }
         }
@@ -220,17 +276,23 @@ Add Here : ");
             Console.Write(@"Show your vacancies    [1]
 Add vacancy            [2]
 Show Notification      [3]
+Return Home Page       [0]
 
 Enter your option  : ");
 
             int option = int.Parse(Console.ReadLine());
             if (option == 1)
             {
+                Console.Clear();
                 CurrentEmployer.ShowVacancies();
+                EmployerPage();
             }
             else if (option == 2)
             {
+                Console.Clear();
                 CurrentEmployer.AddNewVacancies();
+                EmployerPage();
+
             }
             else if (option == 3)
             {
@@ -249,7 +311,7 @@ Reject  [2]
 
 Add Here : ");
                 int choosen = int.Parse(Console.ReadLine());
-                if (choosen ==1)
+                if (choosen == 1)
                 {
                     Console.Write("Enter Applicant ID : ");
                     int id = int.Parse(Console.ReadLine());
@@ -265,8 +327,11 @@ Add Here : ");
                     string notification = Console.ReadLine();
                     dataBase.GetWorkerByID(id).Notifications.Add(notification);
                 }
-
-
+                EmployerPage();
+            }
+            else if (option == 0)
+            {
+                Start();
             }
         }
 
@@ -283,10 +348,12 @@ Apply Vacancies   [2]
 Add CV            [3]
 Show CV           [4]
 Notification      [5]
+Return HomePage   [0]
 
 Add your option  : ");
             Console.WriteLine();
             int option = int.Parse(Console.ReadLine());
+            Console.Clear();
             if (option == 1)
             {
                 foreach (var item in dataBase.humans)
@@ -297,9 +364,20 @@ Add your option  : ");
                         employer.ShowVacancies();
                     }
                 }
+                WorkerPage();
             }
             else if (option == 2)
             {
+                Console.Clear();
+                foreach (var item in dataBase.humans)
+                {
+                    if (item is Employer)
+                    {
+                        Employer employer = (Employer)item;
+                        employer.ShowVacancies();
+                    }
+                }
+                Console.WriteLine("\n\n");
                 Console.Write("Enter Id to Apply Vacancy : ");
                 int id = int.Parse(Console.ReadLine());
                 Notifications newNotification = new Notifications
@@ -310,17 +388,31 @@ Add your option  : ");
                     NotificationDate = DateTime.Now,
                 };
                 dataBase.GetVacancyByID(id).Notifications.Add(newNotification);
+                Console.WriteLine("\n");
+                Thread.Sleep(1000);
+                Console.Clear();
+                WorkerPage();
+
             }
             else if (option == 3)
             {
+                Thread.Sleep(1000);
+                Console.Clear();
                 CurrentWorker.AddCV();
+                WorkerPage();
+
             }
             else if (option == 4)
             {
+                Console.Clear();
                 dataBase.ShowCV();
+                Console.WriteLine("\n");
+                WorkerPage();
+
             }
             else if (option == 5)
             {
+                Console.Clear();
                 if (CurrentWorker.Notifications != null)
                 {
                     foreach (var item in CurrentWorker.Notifications)
@@ -328,6 +420,13 @@ Add your option  : ");
                         Console.WriteLine(item);
                     }
                 }
+                WorkerPage();
+
+            }
+            else if (option == 0)
+            {
+                Console.Clear();
+                Start();
             }
         }
 

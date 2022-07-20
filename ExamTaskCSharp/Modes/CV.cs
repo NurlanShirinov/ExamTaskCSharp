@@ -20,27 +20,39 @@ namespace ExamTaskCSharp.Modes
 
         public void ShowCV()
         {
-            Console.WriteLine($"Qualificaation    : {Qualification}");
-            Console.WriteLine($"School            : {School}");
-            Console.WriteLine($"University score  : {UniScore}");
+            Console.WriteLine($"-Qualificaation    : {Qualification}-");
+            Console.WriteLine(" ---------------------------------------");
+            Console.WriteLine($"-School            : {School}");
+            Console.WriteLine(" ---------------------------------------");
+
+            Console.WriteLine($"-University score  : {UniScore}-");
             int c = 0;
             foreach (var item in Skils)
             {
                 Console.WriteLine($"[{++c}] Skill : {item}");
             }
+            Console.WriteLine(" ---------------------------------------");
 
             foreach (var item in previousWorkedCompanies)
             {
                 item.Show();
             }
+            Console.WriteLine(" ---------------------------------------");
+
             int k = 0;
             foreach (var item in Languages)
             {
                 Console.WriteLine($"[{++k}] Language : {item}");
 
             }
+            Console.WriteLine(" ---------------------------------------");
+
             Console.WriteLine($"Certificate  : {HasCertificate}");
+            Console.WriteLine(" ---------------------------------------");
+
             Console.WriteLine($"Website Link : {WebsiteLinks}");
+            Console.WriteLine(" **********************************************");
+
 
 
         }
