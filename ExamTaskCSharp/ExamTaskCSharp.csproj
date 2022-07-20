@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modes\CustomExceptionClass.cs" />
     <Compile Include="Modes\CV.cs" />
     <Compile Include="Modes\DataBase.cs" />
     <Compile Include="Modes\Employer.cs" />

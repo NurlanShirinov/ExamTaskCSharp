@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,6 +11,9 @@ namespace ExamTaskCSharp.Modes
 {
     public class Menu
     {
+
+        public static StackFrame callStack = new StackFrame(1, true);
+
         static Human CurrentUser = new Human();
 
         static Vacancy vacancy1 = new Vacancy
@@ -64,8 +69,8 @@ namespace ExamTaskCSharp.Modes
             Age = 24,
             City = "Agdam",
             Phone = "0517901252",
-            Mail = "n",
-            Password = "n",
+            Mail = "nurlan@gmail.com",
+            Password = "nurlan123",
             WorkerCV = new List<CV>
             {
                  new CV
@@ -98,8 +103,8 @@ namespace ExamTaskCSharp.Modes
             Age = 45,
             City = "Baku",
             Phone = "0517612898",
-            Mail = "m",
-            Password = "m",
+            Mail = "melik@gmail.com",
+            Password = "melik123",
             Vacancies = new List<Vacancy> { vacancy1, vacancy2 },
         };
 
@@ -128,7 +133,26 @@ namespace ExamTaskCSharp.Modes
             string email = Console.ReadLine();
 
             Console.Write("Password : ");
-            string password = Console.ReadLine();
+            var password = string.Empty;
+            ConsoleKey key;
+            do
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+                key = keyInfo.Key;
+
+                if (key == ConsoleKey.Backspace && password.Length > 0)
+                {
+                    Console.Write("\b \b");
+                    password = password.Remove(password.Length - 1, 1);
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    Console.Write("*");
+                    password += keyInfo.KeyChar;
+                }
+            } while (key != ConsoleKey.Enter);
+            Console.WriteLine();
+            Console.WriteLine();
 
             foreach (var item in dataBase.humans)
             {
@@ -156,7 +180,7 @@ HomePage   [0]
 
 Add Here : ");
             int opt = int.Parse(Console.ReadLine());
-            if (opt==0)
+            if (opt == 0)
             {
                 Console.Clear();
                 Start();
@@ -246,23 +270,40 @@ Add Here : ");
 
         public static void Start()
         {
-            
+
             while (true)
             {
-                FrileWriterFileReadercs.WriteFile(dataBase); 
+                try
+                {
+                    FrileWriterFileReadercs.WriteFile(dataBase);
 
-                Console.Write(@"Sign In   [1]
+                    Console.Write(@"Sign In   [1]
 Sign up   [2]
 
 Add Here : ");
-                int select = int.Parse(Console.ReadLine());
-                if (select == 1)
-                {
-                    SignIn();
+                    int select = int.Parse(Console.ReadLine());
+                    if (select == 1)
+                    {
+                        Console.Clear();
+                        SignIn();
+                    }
+                    else if (select == 2)
+                    {
+                        Console.Clear();
+                        SignUp();
+                    }
+                    else
+                    {
+                        throw new CustomExceptionClass("Please choose between 1-2", DateTime.Now, callStack.GetFileLineNumber(), System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    }
                 }
-                else if (select == 2)
+                catch (Exception ex)
                 {
-                    SignUp();
+                    File.AppendAllText("Error.log", ex.ToString());
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(ex);
+                    Console.ResetColor();
+                    Thread.Sleep(2000);
                 }
             }
         }
@@ -304,7 +345,6 @@ Enter your option  : ");
                 Console.Clear();
                 CurrentEmployer.ShowNotificationByID(notificationId);
                 Console.WriteLine("\n\n");
-
                 Console.Write(@"Do you ACCEPT or REJECT?
 ACCEPT  [1]
 Reject  [2]
@@ -313,25 +353,38 @@ Add Here : ");
                 int choosen = int.Parse(Console.ReadLine());
                 if (choosen == 1)
                 {
+                    Console.Clear();
                     Console.Write("Enter Applicant ID : ");
                     int id = int.Parse(Console.ReadLine());
                     Console.WriteLine("Enter note to accepted Applicant : ");
                     string notification = Console.ReadLine();
                     dataBase.GetWorkerByID(id).Notifications.Add(notification);
+                    EmployerPage();
+
                 }
                 else if (choosen == 2)
                 {
+                    Console.Clear();
                     Console.Write("Enter Applicant ID : ");
                     int id = int.Parse(Console.ReadLine());
                     Console.WriteLine("Enter note to Rejected Applicant : ");
                     string notification = Console.ReadLine();
                     dataBase.GetWorkerByID(id).Notifications.Add(notification);
+                    EmployerPage();
                 }
-                EmployerPage();
+                else
+                {
+                    throw new CustomExceptionClass("Please choose between 1-2", DateTime.Now, callStack.GetFileLineNumber(), System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+                }
             }
             else if (option == 0)
             {
                 Start();
+            }
+            else
+            {
+                throw new CustomExceptionClass("Please choose between 0-3", DateTime.Now, callStack.GetFileLineNumber(), System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
         }
 
@@ -427,6 +480,10 @@ Add your option  : ");
             {
                 Console.Clear();
                 Start();
+            }
+            else
+            {
+                throw new CustomExceptionClass("Please choose between 0-6", DateTime.Now, callStack.GetFileLineNumber(), System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
         }
 
