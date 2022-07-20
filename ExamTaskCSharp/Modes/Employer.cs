@@ -8,7 +8,8 @@ namespace ExamTaskCSharp.Modes
 {
     public class Employer : Human
     {
-        public List<Vacancy> Vacancies { get; set; }
+        public List<Vacancy> Vacancies { get; set; } = new List<Vacancy>();
+
 
         public void ShowVacancies()
         {
@@ -38,11 +39,44 @@ namespace ExamTaskCSharp.Modes
             int requirmentCount = int.Parse(Console.ReadLine());
             for (int i = 0; i < requirmentCount; i++)
             {
-                Console.Write($"[{i + 1}]");
-                newVacancy.Requirments[i] = Console.ReadLine();
+                Console.Write($"[{i + 1}] Requirment : ");
+                string requirment = Console.ReadLine();
+                newVacancy.Requirments.Add(requirment);
             }
 
             Vacancies.Add(newVacancy);
+        }
+
+        public void ShowNotifications()
+        {
+            foreach (var item in Vacancies)
+            {
+                foreach (var item2 in item.Notifications)
+                {
+                    item2.ShowNotification();
+                }
+            }
+
+        }
+
+        public void ShowNotificationByID(int id)
+        {
+
+            foreach (var item in Vacancies)
+            {
+                foreach (var item2 in item.Notifications)
+                {
+                    if (item2.Id == id)
+                    {
+                        item2.ShowNotification();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Such Notification is not valid!");
+                    }
+                }
+
+            }
         }
 
 

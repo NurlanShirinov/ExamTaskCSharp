@@ -12,9 +12,9 @@ namespace ExamTaskCSharp.Modes
         static public int StaticId { get; set; }
         public string CompanyName { get; set; }
         public string Name { get; set; }
-        public List<string> Requirments { get; set; }
+        public List<string> Requirments { get; set; }=new List<string>();
         public double Salary { get; set; }
-        public List<Notifications> Notifications { get; set; }
+        public List<Notifications> Notifications { get; set; }=new List<Notifications>();
         public int UnreadNotificationCount { get; set; }
         public Vacancy()
         {

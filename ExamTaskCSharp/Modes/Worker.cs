@@ -8,8 +8,8 @@ namespace ExamTaskCSharp.Modes
 {
     public class Worker:Human
     {
-        public List<CV> WorkerCV { get; set; }
-        public List<string> Notifications { get; set; }
+        public List<CV> WorkerCV { get; set; }=new List<CV>();
+        public List<string> Notifications { get; set; }=new List<string>();
 
         public void AddCV()
         {
@@ -28,7 +28,9 @@ namespace ExamTaskCSharp.Modes
             for (int i = 0; i < skillCount; i++)
             {
                 Console.Write($"[{i + 1}] Skill  : ");
-                newCV.Skils[i] = Console.ReadLine();
+               string ability = Console.ReadLine();
+                newCV.Skils.Add(ability);
+
             }
 
 
@@ -43,10 +45,10 @@ namespace ExamTaskCSharp.Modes
                 Console.Write("Position : ");
                 newPWC.Position = Console.ReadLine();
 
-                Console.Write("Enter Start Date : ");
+                Console.Write("Enter Start Date (YYYY.MM.DD) : ");
                 newPWC.StartDate = DateTime.Parse(Console.ReadLine());
 
-                Console.Write("Enter End Date : ");
+                Console.Write("Enter End Date (YYYY.MM.DD) : ");
                 newPWC.EndDate = DateTime.Parse(Console.ReadLine());
 
                 newCV.previousWorkedCompanies.Add(newPWC);
@@ -57,7 +59,8 @@ namespace ExamTaskCSharp.Modes
             for (int i = 0; i < languageCount; i++)
             {
                 Console.Write($"[{i + 1}] Language  : ");
-                newCV.Languages[i] = Console.ReadLine();
+                string lang = Console.ReadLine();
+                newCV.Languages.Add(lang);
             }
 
             Console.Write("WebsiteLinks      : ");
@@ -70,16 +73,7 @@ namespace ExamTaskCSharp.Modes
         }
 
 
-        public void ShowCV()
-        {
-            Console.WriteLine("*************Worker CV**********************");
-
-            foreach (var item in WorkerCV)
-            {
-                Console.WriteLine(item);
-            }
-
-        }
+     
 
     }
 

@@ -63,8 +63,8 @@ namespace ExamTaskCSharp.Modes
             Age = 24,
             City = "Agdam",
             Phone = "0517901252",
-            Mail = "nurlan@gmail.com",
-            Password = "nurlan123",
+            Mail = "n",
+            Password = "n",
             WorkerCV = new List<CV>
             {
                  new CV
@@ -97,8 +97,8 @@ namespace ExamTaskCSharp.Modes
             Age = 45,
             City = "Baku",
             Phone = "0517612898",
-            Mail = "melik@bk.ru",
-            Password = "melik123",
+            Mail = "m",
+            Password = "m",
             Vacancies = new List<Vacancy> { vacancy1, vacancy2 },
         };
 
@@ -190,18 +190,22 @@ Add Here : ");
 
         public static void Start()
         {
-            Console.Write(@"Sign In   [1]
+            while (true)
+            {
+
+                Console.Write(@"Sign In   [1]
 Sign up   [2]
 
 Add Here : ");
-            int select = int.Parse(Console.ReadLine());
-            if (select == 1)
-            {
-                SignIn();
-            }
-            else if (select == 2)
-            {
+                int select = int.Parse(Console.ReadLine());
+                if (select == 1)
+                {
+                    SignIn();
+                }
+                else if (select == 2)
+                {
 
+                }
             }
         }
 
@@ -228,7 +232,39 @@ Enter your option  : ");
             }
             else if (option == 3)
             {
-                
+                Console.Clear();
+                CurrentEmployer.ShowNotifications();
+                Console.WriteLine("\n\n");
+                Console.WriteLine("Enter Notification ID to Accept or Reject : ");
+                int notificationId = int.Parse(Console.ReadLine());
+                Console.Clear();
+                CurrentEmployer.ShowNotificationByID(notificationId);
+                Console.WriteLine("\n\n");
+
+                Console.Write(@"Do you ACCEPT or REJECT?
+ACCEPT  [1]
+Reject  [2]
+
+Add Here : ");
+                int choosen = int.Parse(Console.ReadLine());
+                if (choosen ==1)
+                {
+                    Console.Write("Enter Applicant ID : ");
+                    int id = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter note to accepted Applicant : ");
+                    string notification = Console.ReadLine();
+                    dataBase.GetWorkerByID(id).Notifications.Add(notification);
+                }
+                else if (choosen == 2)
+                {
+                    Console.Write("Enter Applicant ID : ");
+                    int id = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter note to Rejected Applicant : ");
+                    string notification = Console.ReadLine();
+                    dataBase.GetWorkerByID(id).Notifications.Add(notification);
+                }
+
+
             }
         }
 
@@ -279,11 +315,11 @@ Add your option  : ");
             }
             else if (option == 4)
             {
-                CurrentWorker.ShowCV();
+                dataBase.ShowCV();
             }
             else if (option == 5)
             {
-                if (CurrentWorker.Notifications!=null)
+                if (CurrentWorker.Notifications != null)
                 {
                     foreach (var item in CurrentWorker.Notifications)
                     {

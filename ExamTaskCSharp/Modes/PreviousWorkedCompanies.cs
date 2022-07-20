@@ -17,7 +17,17 @@ namespace ExamTaskCSharp.Modes
 
         public PreviousWorkedCompanies()
         {
-            Id = StaticID++;
+            Id = ++StaticID;
         }
+
+        public void Show()
+        {
+            Console.WriteLine($"Company Name : {CompanyName}");
+            Console.WriteLine($"Position     : {Position}");
+            Console.WriteLine($"Start Date   : {StartDate}");
+            Console.WriteLine($"End Date     : {EndDate}");
+        }
+
+
     }
 }

@@ -19,9 +19,45 @@ namespace ExamTaskCSharp.Modes
                     Employer emp = (Employer)item;
                     foreach (var item2 in emp.Vacancies)
                     {
-                        return item2;
+                        if (item2.ID == id)
+                        {
+                            Console.WriteLine("Succesfully Applied");
+                            return item2;
+                        }
                     }
-                     
+
+                }
+            }
+            return null;
+        }
+
+        public void ShowCV()
+
+        {
+            Console.WriteLine("*************Worker CV**********************");
+
+            foreach (var item in humans)
+            {
+                if (item is Worker)
+                {
+                    Worker worker = (Worker)item;
+                    foreach (var item2 in worker.WorkerCV)
+                    {
+                        item2.ShowCV();
+                    }
+                }
+            }
+
+        }
+
+        public Worker GetWorkerByID(int id)
+        {
+            foreach (var item in humans)
+            {
+                if (item is Worker && item.Id==id)
+                {
+                    Worker worker = (Worker)item;
+                    return worker;
                 }
             }
             return null;
