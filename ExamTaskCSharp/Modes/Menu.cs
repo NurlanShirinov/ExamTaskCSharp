@@ -285,7 +285,7 @@ Show CV           [4]
 Notification      [5]
 
 Add your option  : ");
-
+            Console.WriteLine();
             int option = int.Parse(Console.ReadLine());
             if (option == 1)
             {
